@@ -1,6 +1,6 @@
 # taxi-stand-system-backend
-タクシー乗り場の可視化・効率化システムのバックエンド。
-##　環境構築
+タクシー乗り場の可視化・効率化システムのバックエンド。  
+## 環境構築
 1.Dockerコンテナのビルド
 ```
 docker-compose up -d --build
