@@ -15,7 +15,7 @@ docker container exec -it taxi-stand-system-backend-php-1 bash
 ```
 composer install
 ```
-4.マイグレーションの実行(.envを作成して情報を書き換える)
+4.マイグレーションの実行(※事前に.envを作成して情報を書き換える)
 ```
 php artisan migrate
 ```
