@@ -4,7 +4,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Auth\RegisterApiController;
 use App\Http\Controllers\Auth\LoginApiController;
-use App\Http\Controllers\HomeController;
+use App\Http\Controllers\Spot\SpotController;
 
 /*
 |--------------------------------------------------------------------------
@@ -26,4 +26,5 @@ Route::post('/register', [RegisterApiController::class, 'register']);
 Route::post('/login', [LoginApiController::class, 'login']);
 Route::post('/logout', [LoginApiController::class, 'logout']);
 Route::middleware('auth:sanctum')->group(function(){
+    Route::post('/spots_register/{usersId}', [SpotController::class, 'spotsRegister']);
 });
