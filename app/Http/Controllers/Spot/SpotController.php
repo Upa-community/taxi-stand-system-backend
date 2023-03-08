@@ -27,4 +27,12 @@ class SpotController extends Controller
             "message" => "Spot registration success!"
        ]);
     }
+
+    public function spotsDelete($spotsId) {
+        Spot::where("id", $spotsId)->delete();
+
+        return response()->json([
+            "message" => "Spot deletetion success!"
+        ]);
+    }
 }

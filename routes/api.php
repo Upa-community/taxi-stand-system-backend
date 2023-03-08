@@ -29,6 +29,7 @@ Route::post('/login', [LoginApiController::class, 'login']);
 Route::post('/logout', [LoginApiController::class, 'logout']);
 Route::middleware('auth:sanctum')->group(function(){
     Route::post('/spots_register/{usersId}', [SpotController::class, 'spotsRegister']);
+    Route::get('/spots_delete/{spotsId}', [SpotController::class, 'spotsDelete']);
     Route::post('/cameras_register/{spotsId}', [CameraController::class, 'cameraRegister']);
     Route::get('/home_data/{usersId}', [HomeController::class, 'homeData']);
 
