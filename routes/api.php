@@ -6,6 +6,7 @@ use App\Http\Controllers\Auth\RegisterApiController;
 use App\Http\Controllers\Auth\LoginApiController;
 use App\Http\Controllers\Spot\SpotController;
 use App\Http\Controllers\Camera\CameraController;
+use App\Http\Controllers\Home\HomeController;
 
 /*
 |--------------------------------------------------------------------------
@@ -29,5 +30,6 @@ Route::post('/logout', [LoginApiController::class, 'logout']);
 Route::middleware('auth:sanctum')->group(function(){
     Route::post('/spots_register/{usersId}', [SpotController::class, 'spotsRegister']);
     Route::post('/cameras_register/{spotsId}', [CameraController::class, 'cameraRegister']);
+    Route::get('/home_data/{usersId}', [HomeController::class, 'homeData']);
 
 });
