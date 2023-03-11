@@ -32,7 +32,7 @@ class HomeController extends Controller
             $r = rand(0, 240);
             $g = rand(0, 240);
             $b = rand(0, 240);
-            $borderColor = "rgba(". (string)$r . ", " . (string)$g . ", " . (string)$b . ", " . "0.6)";
+            $borderColor = "rgba(". (string)$r . ", " . (string)$g . ", " . (string)$b . ", " . "0.9)";
 
             $data = [
                 "id" => $spots[$i]["id"],
