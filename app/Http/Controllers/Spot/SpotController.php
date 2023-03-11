@@ -18,6 +18,7 @@ class SpotController extends Controller
             "spots_address" => $data["spots_address"],
             "spots_url" => $data["spots_url"],
             "spots_status" => "None",
+            "spots_max" => $data["spots_max"],
             "spots_count" => 0,
             "spots_day_count" => "None",
             "spots_month_count" => "None",
