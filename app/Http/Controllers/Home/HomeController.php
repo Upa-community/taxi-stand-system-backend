@@ -29,10 +29,10 @@ class HomeController extends Controller
         for ($i = 0; $i < count($spots); $i++) {
             $spotsDayCount = explode(",", $spots[$i]["spots_day_count"]);
             $spotsMonthCount = explode(",", $spots[$i]["spots_month_count"]);
-            $r = rand(0, 240);
-            $g = rand(0, 240);
-            $b = rand(0, 240);
-            $borderColor = "rgba(". (string)$r . ", " . (string)$g . ", " . (string)$b . ", " . "0.9)";
+            $r = rand(100, 255);
+            $g = rand(100, 255);
+            $b = rand(150, 255);
+            $borderColor = "rgba(". (string)$r . ", " . (string)$g . ", " . (string)$b . ", " . "1)";
 
             $data = [
                 "id" => $spots[$i]["id"],
