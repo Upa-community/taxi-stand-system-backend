@@ -11,7 +11,7 @@ class HomeController extends Controller
     public function homeData($usersId) {
         $spotsData = [];
         $monthLabelsData = [];
-        $dayLabelsData = [];
+        $dayLabelsData = range(0, 23);
         $spots = Spot::where("users_id", $usersId)->get([
             "id",
             "spots_name",
@@ -50,11 +50,6 @@ class HomeController extends Controller
             ];
             
             array_push($spotsData, $data);
-        }
-
-        for ($i = 0; $i < 24; $i++) {
-            $objDateTime = date('Y-m-d', strtotime("-$i day"));
-            array_push($dayLabelsData, $i);
         }
 
         for ($i = 0; $i < 30; $i++) {
