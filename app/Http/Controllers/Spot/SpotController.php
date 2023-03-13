@@ -29,6 +29,21 @@ class SpotController extends Controller
        ]);
     }
 
+    public function spotsUpdate(Request $request, $spotsId) {
+        $data = $request->all();
+
+        Spot::where("id", $spotsId)->update([
+            "spots_name" => $data["spots_name"],
+            "spots_address" => $data["spots_address"],
+            "spots_url" => $data["spots_url"],
+            "spots_max" => $data["spots_max"],
+        ]);
+
+       return response()->json([
+            "message" => "Spot update success!"
+       ]);
+    }
+
     public function spotsDelete($spotsId) {
         Spot::where("id", $spotsId)->delete();
 
