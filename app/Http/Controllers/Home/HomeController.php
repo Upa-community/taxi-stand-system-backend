@@ -48,11 +48,27 @@ class HomeController extends Controller
                 "spots_month_count" => $spotsMonthCount,
                 "border_color" => $borderColor
             ];
-            
+
             array_push($spotsData, $data);
         }
 
-        for ($i = 0; $i < 30; $i++) {
+        $week = ["日", "月", "火", "水", "木", "金", "土"];
+        $weekResult = [];
+        $weekData = [];
+
+        for ($i = 0; $i < 7; $i++) {
+            $objDateTime = strtotime("-$i day");
+            $dayOfWeek = date('w', $objDateTime);
+            array_push($weekResult, $week[$dayOfWeek]);
+        }
+
+        for ($i = 0; $i < 5; $i++) {
+            $weekData = array_merge($weekData, $weekResult);
+        }
+
+        $weekData = array_reverse($weekData);
+
+        for ($i = 0; $i < 35; $i++) {
             $objDateTime = date('Y-m-d', strtotime("-$i day"));
             array_push($monthLabelsData, $objDateTime);
         }
@@ -61,6 +77,7 @@ class HomeController extends Controller
 
         $response = [
             "spots_data" => $spotsData,
+            "spots_week" => $weekData,
             "day_labels_data" => $dayLabelsData,
             "month_labels_data" => $monthLabelsData
         ];
