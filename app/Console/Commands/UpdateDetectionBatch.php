@@ -39,29 +39,32 @@ class UpdateDetectionBatch extends Command
      */
     public function handle()
     {
-        dump('サンプルコマンド実行');
         $spots = Spot::get([
             "id",
             "spots_url",
         ]);
 
-        dump($spots);
+        $json = json_encode($spots);
 
         $url = env("DETECTION_API_URL") . "api/detect/";
-        $options = array(
+        $options = [
             CURLOPT_URL => $url,
             CURLOPT_POST => true,
-            CURLOPT_POSTFIELDS => $spots,
+            CURLOPT_POSTFIELDS =>  $json,
             CURLOPT_RETURNTRANSFER => true,
-        );
+            CURLOPT_HTTPHEADER => [
+                'Content-Type: application/json',
+                'Content-Length: ' . strlen($json)
+            ]
+        ];
 
         $curl = curl_init();
         curl_setopt_array($curl, $options);
 
         $response = curl_exec($curl);
         Log::info($response);
-        dump('サンプルコマンド実行syu');
 
-        return 0;
+        return $response;
     }
 }
+ 
