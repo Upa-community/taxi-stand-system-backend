@@ -42,6 +42,8 @@ class UpdateDetectionBatch extends Command
         $spots = Spot::get([
             "id",
             "spots_url",
+            "spots_day_count",
+            "spots_month_count"
         ]);
 
         $json = json_encode($spots);
@@ -62,9 +64,42 @@ class UpdateDetectionBatch extends Command
         curl_setopt_array($curl, $options);
 
         $response = curl_exec($curl);
+
+        $response = json_decode($response, true);
         Log::info($response);
 
+        for ($i = 0; $i < count($spots); $i++) {
+            $spotsDayCount = explode(",", $spots[$i]["spots_day_count"]);
+            $spotsMonthCount = explode(",", $spots[$i]["spots_month_count"]);
+
+            if ($spotsDayCount[0] === "None") {
+                Spot::where("id", $spots[$i]["id"])->update([
+                    "spots_count" => $response[$i]["count"],
+                    "spots_day_count" => $response[$i]["count"],
+                ]);
+            }
+
+            if ($spotsMonthCount[0] === "None") {
+                Spot::where("id", $spots[$i]["id"])->update([
+                    "spots_count" => $response[$i]["count"],
+                    "spots_month_count" => $response[$i]["count"],
+                ]);
+            }
+
+            if (count($spotsDayCount) > 24) {
+                Spot::where("id", $spots[$i]["id"])->update([
+                    "spots_count" => $response[$i]["count"],
+                    "spots_day_count" => $response[$i]["count"],
+                ]);
+            } else {
+                array_push($spotsDayCount, $response[$i]["count"]);
+                $spotsDayCountStr = implode(',', $spotsDayCount);
+                Spot::where("id", $spots[$i]["id"])->update([
+                    "spots_count" => $response[$i]["count"],
+                    "spots_day_count" => $spotsDayCountStr,
+                ]);
+            }
+        }
         return $response;
     }
 }
- 
