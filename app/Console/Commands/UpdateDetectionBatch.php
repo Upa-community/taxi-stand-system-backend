@@ -62,17 +62,30 @@ class UpdateDetectionBatch extends Command
             ]
         ];
 
-        try {
-            $curl = curl_init();
-            curl_setopt_array($curl, $options);
-            $response = curl_exec($curl);
-            $response = json_decode($response, true);
+        $response = null;
 
-            if (is_null($response)) {
+        // DetectionAPIの通信でエラーが発生した際に5回までリトライを行う。
+        for ($i =0; $i <= 5; $i++) {
+            try {
+                $curl = curl_init();
+                curl_setopt_array($curl, $options);
+                $response = curl_exec($curl);
+                $response = json_decode($response, true);
+
+                if (!is_null($response)) {
+                    Log::info("detectionAPIの処理が成功しました。");
+
+                    break;
+                }
+
                 throw new \Exception();
+            } catch (\Exception $e) {
+                if ($i >= 5) {
+                    Log::error("detectionAPIの処理でエラーが発生したため強制終了しました。");
+
+                    return;
+                }
             }
-        } catch (\Exception $e) {
-            Log::error("detectionAPIの処理が失敗しました。");
         }
 
         for ($i = 0; $i < count($spots); $i++) {
