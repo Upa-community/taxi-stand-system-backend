@@ -62,10 +62,18 @@ class UpdateDetectionBatch extends Command
             ]
         ];
 
-        $curl = curl_init();
-        curl_setopt_array($curl, $options);
-        $response = curl_exec($curl);
-        $response = json_decode($response, true);
+        try {
+            $curl = curl_init();
+            curl_setopt_array($curl, $options);
+            $response = curl_exec($curl);
+            $response = json_decode($response, true);
+
+            if (is_null($response)) {
+                throw new \Exception();
+            }
+        } catch (\Exception $e) {
+            Log::error("detectionAPIの処理が失敗しました。");
+        }
 
         for ($i = 0; $i < count($spots); $i++) {
             $spotsDayCount = explode(",", $spots[$i]["spots_day_count"]);
