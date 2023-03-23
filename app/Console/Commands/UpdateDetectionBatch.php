@@ -39,6 +39,8 @@ class UpdateDetectionBatch extends Command
      */
     public function handle()
     {
+        Log::info("記録の更新処理を開始します");
+
         $spots = Spot::get([
             "id",
             "spots_url",
@@ -62,44 +64,52 @@ class UpdateDetectionBatch extends Command
 
         $curl = curl_init();
         curl_setopt_array($curl, $options);
-
         $response = curl_exec($curl);
-
         $response = json_decode($response, true);
-        Log::info($response);
 
         for ($i = 0; $i < count($spots); $i++) {
             $spotsDayCount = explode(",", $spots[$i]["spots_day_count"]);
             $spotsMonthCount = explode(",", $spots[$i]["spots_month_count"]);
 
+            // 初回
             if ($spotsDayCount[0] === "None") {
                 Spot::where("id", $spots[$i]["id"])->update([
-                    "spots_count" => $response[$i]["count"],
                     "spots_day_count" => $response[$i]["count"],
                 ]);
             }
 
             if ($spotsMonthCount[0] === "None") {
+                $spotsMonthCountNew = str_repeat('0,', 34);
+                $spotsMonthCountNew = $spotsMonthCountNew . $response[$i]["count"];
                 Spot::where("id", $spots[$i]["id"])->update([
-                    "spots_count" => $response[$i]["count"],
-                    "spots_month_count" => $response[$i]["count"],
+                    "spots_month_count" => $spotsMonthCountNew,
                 ]);
             }
 
-            if (count($spotsDayCount) > 24) {
-                Spot::where("id", $spots[$i]["id"])->update([
-                    "spots_count" => $response[$i]["count"],
-                    "spots_day_count" => $response[$i]["count"],
-                ]);
-            } else {
+            // １時間
+            Spot::where("id", $spots[$i]["id"])->update(["spots_count" => $response[$i]["count"]]);
+
+            // １日
+            if (count($spotsDayCount) <= 24) {
                 array_push($spotsDayCount, $response[$i]["count"]);
                 $spotsDayCountStr = implode(',', $spotsDayCount);
                 Spot::where("id", $spots[$i]["id"])->update([
-                    "spots_count" => $response[$i]["count"],
                     "spots_day_count" => $spotsDayCountStr,
+                ]);
+            } else {
+                // 35日
+                $spotsDayCountInt = array_map('intval', $spotsDayCount);
+                $spotsDayCountSum = array_sum($spotsDayCountInt) / 24;
+                array_push($spotsMonthCount, $spotsDayCountSum);
+                unset($spotsMonthCount[0]);
+                $spotsMonthCountStr = implode(',', $spotsMonthCount);
+                Spot::where("id", $spots[$i]["id"])->update([
+                    "spots_day_count" => $response[$i]["count"],
+                    "spots_month_count" => $spotsMonthCountStr
                 ]);
             }
         }
-        return $response;
+
+        Log::info("記録の更新処理を終了します");
     }
 }
