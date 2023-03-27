@@ -33,5 +33,5 @@ Route::middleware('auth:sanctum')->group(function(){
     Route::get('/spots_delete/{spotsId}', [SpotController::class, 'spotsDelete']);
     Route::post('/cameras_register/{spotsId}', [CameraController::class, 'cameraRegister']);
     Route::get('/home_data/{usersId}', [HomeController::class, 'homeData']);
-
+    Route::get('/spots_data/{spotsId}', [SpotController::class, 'spotsData']);
 });

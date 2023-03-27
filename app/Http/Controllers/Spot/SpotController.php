@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Spot;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Spot\Spot;
+use App\Models\Day\Day;
 
 class SpotController extends Controller
 {
@@ -49,6 +50,27 @@ class SpotController extends Controller
 
         return response()->json([
             "message" => "Spot deletetion success!"
+        ]);
+    }
+
+    public function spotsData($spotsId) {
+        $days = Day::where("spots_id", $spotsId)->get();
+        $daysData = array_fill(0, 23, 0);
+
+        for ($i = 0; $i < count($days); $i++) {
+            $daysCount = explode(",", $days[$i]["days_count"]);
+
+            for ($j = 0; $j < count($daysData); $j++) {
+                $daysData[$j] = $daysData[$j] + (Int)$daysCount[$j];
+            }
+        }
+
+        for ($i = 0; $i < count($daysData); $i++) {
+            $daysData[$i] = $daysData[$i] / count($days);
+        }
+
+        return response()->json([
+            "days_data" => $daysData
         ]);
     }
 }
