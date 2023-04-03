@@ -20,7 +20,7 @@ class UpdateDetectionBatch extends Command
      *
      * @var string
      */
-    protected $description = '推論結果の更新を行います';
+    protected $description = '推論結果の更新を行います。';
 
     /**
      * Create a new command instance.
@@ -39,7 +39,7 @@ class UpdateDetectionBatch extends Command
      */
     public function handle()
     {
-        Log::info("記録の更新処理を開始します");
+        Log::info("記録の更新処理を開始します。");
 
         $spots = Spot::get([
             "id",
@@ -131,6 +131,6 @@ class UpdateDetectionBatch extends Command
             }
         }
 
-        Log::info("記録の更新処理を終了します");
+        Log::info("記録の更新処理を終了します・");
     }
 }
