@@ -4,10 +4,10 @@ namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\ValidationException;
 use App\Models\User;
-use \Symfony\Component\HttpFoundation\Response;
 
 class LoginApiController extends Controller
 {
@@ -22,6 +22,7 @@ class LoginApiController extends Controller
 
             $user->tokens()->delete();
             $token = $user->createToken("login:user{$user->id}")->plainTextToken;
+            
             return response()->json(['token' => $token, 'user' => $user], Response::HTTP_OK);
         }
 
@@ -30,11 +31,13 @@ class LoginApiController extends Controller
 
     public function logout(Request $request){
         auth('sanctum')->user()->tokens()->delete();
-        return response(['message' => 'You have been successfully logged out.'], 200);
+
+        return response(['message' => 'You have been successfully logged out.'], Response::HTTP_OK);
     }
 
     public function user(Request $request){
         $user = $request->user();
-        return response()->json(compact('user'), 200);
+
+        return response()->json(compact('user'), Response::HTTP_OK);
     }
 }

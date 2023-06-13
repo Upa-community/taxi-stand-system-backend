@@ -38,6 +38,6 @@ class RegisterApiController extends Controller
             'error' => ''
         ];
 
-        return response()->json( $json, Response::HTTP_OK);
+        return response()->json($json, Response::HTTP_OK);
     }
 }
