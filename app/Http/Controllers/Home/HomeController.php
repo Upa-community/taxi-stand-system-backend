@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Home;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use Symfony\Component\HttpFoundation\Response;
 use App\Models\Spot\Spot;
 
 class HomeController extends Controller
@@ -28,12 +29,12 @@ class HomeController extends Controller
         $monthLabelsData = $this->createMonthLabelsData();
         $daylabelsData = range(0, 23);
 
-        return [
+        return response()->json([
             "spots_data" => $spotsData,
             "spots_week" => $weekData,
             "day_labels_data" => $daylabelsData,
             "month_labels_data" => $monthLabelsData
-        ];
+        ], Response::HTTP_OK);
     }
 
     public function homeSearch($usersId, $searchWord) {
@@ -56,12 +57,12 @@ class HomeController extends Controller
         $monthLabelsData = $this->createMonthLabelsData();
         $daylabelsData = range(0, 23);
 
-        return [
+        return response()->json([
             "spots_data" => $spotsData,
             "spots_week" => $weekData,
             "day_labels_data" => $daylabelsData,
             "month_labels_data" => $monthLabelsData
-        ];
+        ], Response::HTTP_OK);
     }
 
     private function createSpotsData($spots) {

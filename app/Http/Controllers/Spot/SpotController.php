@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Spot;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use Symfony\Component\HttpFoundation\Response;
 use App\Models\Spot\Spot;
 use App\Models\Day\Day;
 
@@ -27,7 +28,7 @@ class SpotController extends Controller
 
        return response()->json([
             "message" => "Spot registration success!"
-       ]);
+       ], Response::HTTP_OK);
     }
 
     public function spotsUpdate(Request $request, $spotsId) {
@@ -42,7 +43,7 @@ class SpotController extends Controller
 
        return response()->json([
             "message" => "Spot update success!"
-       ]);
+       ], Response::HTTP_OK);
     }
 
     public function spotsDelete($spotsId) {
@@ -50,7 +51,7 @@ class SpotController extends Controller
 
         return response()->json([
             "message" => "Spot deletetion success!"
-        ]);
+        ], Response::HTTP_OK);
     }
 
     public function spotsData($spotsId) {
@@ -71,6 +72,6 @@ class SpotController extends Controller
 
         return response()->json([
             "days_data" => $daysData
-        ]);
+        ], Response::HTTP_OK);
     }
 }

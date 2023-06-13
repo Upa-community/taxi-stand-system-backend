@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Camera;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use Symfony\Component\HttpFoundation\Response;
 use App\Models\Camera\Camera;
 
 class CameraController extends Controller
@@ -20,6 +21,6 @@ class CameraController extends Controller
 
        return response()->json([
             "message" => "Camera registration success!"
-       ]);
+       ], Response::HTTP_OK);
     }
 }
