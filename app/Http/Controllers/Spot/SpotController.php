@@ -26,14 +26,11 @@ class SpotController extends Controller
             "spots_month_count" => "None",
         ]);
 
-       return response()->json([
-            "message" => "Spot registration success!"
-       ], Response::HTTP_OK);
+       return response()->json(["message" => "Spot registration success!"], Response::HTTP_OK);
     }
 
     public function spotsUpdate(Request $request, $spotsId) {
         $data = $request->all();
-
         Spot::where("id", $spotsId)->update([
             "spots_name" => $data["spots_name"],
             "spots_address" => $data["spots_address"],
@@ -41,17 +38,13 @@ class SpotController extends Controller
             "spots_max" => $data["spots_max"],
         ]);
 
-       return response()->json([
-            "message" => "Spot update success!"
-       ], Response::HTTP_OK);
+       return response()->json(["message" => "Spot update success!"], Response::HTTP_OK);
     }
 
     public function spotsDelete($spotsId) {
         Spot::where("id", $spotsId)->delete();
 
-        return response()->json([
-            "message" => "Spot deletetion success!"
-        ], Response::HTTP_OK);
+        return response()->json(["message" => "Spot deletetion success!"], Response::HTTP_OK);
     }
 
     public function spotsData($spotsId) {
@@ -70,8 +63,6 @@ class SpotController extends Controller
             $daysData[$i] = $daysData[$i] / count($days);
         }
 
-        return response()->json([
-            "days_data" => $daysData
-        ], Response::HTTP_OK);
+        return response()->json(["days_data" => $daysData], Response::HTTP_OK);
     }
 }
