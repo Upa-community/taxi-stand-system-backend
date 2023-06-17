@@ -11,7 +11,13 @@ use App\Models\Day\Day;
 class SpotController extends Controller
 {
     public function spotsRegister(Request $request, $userId) {
+        // グラフ用のカラーコードを生成
         $data = $request->all();
+        $r = rand(130, 255);
+        $g = rand(130, 255);
+        $b = rand(180, 255);
+        $color = "rgba(". (string)$r . ", " . (string)$g . ", " . (string)$b . ", " . "1)";
+
         Spot::insertGetId([
             "users_id" => $userId,
             "spots_name" => $data["spots_name"],
@@ -20,6 +26,7 @@ class SpotController extends Controller
             "spots_address" => $data["spots_address"],
             "spots_url" => $data["spots_url"],
             "spots_status" => "None",
+            "spots_color" => $color,
             "spots_max" => $data["spots_max"],
             "spots_count" => 0,
             "spots_day_count" => "None",

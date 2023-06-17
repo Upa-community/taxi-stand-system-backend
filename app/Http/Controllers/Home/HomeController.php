@@ -18,6 +18,7 @@ class HomeController extends Controller
             "spots_address",
             "spots_url",
             "spots_status",
+            "spots_color",
             "spots_max",
             "spots_count",
             "spots_day_count",
@@ -46,6 +47,7 @@ class HomeController extends Controller
             "spots_address",
             "spots_url",
             "spots_status",
+            "spots_color",
             "spots_max",
             "spots_count",
             "spots_day_count",
@@ -71,11 +73,6 @@ class HomeController extends Controller
         for ($i = 0; $i < count($spots); $i++) {
             $spotsDayCount = explode(",", $spots[$i]["spots_day_count"]);
             $spotsMonthCount = explode(",", $spots[$i]["spots_month_count"]);
-            $r = rand(130, 255);
-            $g = rand(130, 255);
-            $b = rand(180, 255);
-            $borderColor = "rgba(". (string)$r . ", " . (string)$g . ", " . (string)$b . ", " . "1)";
-
             $data = [
                 "id" => $spots[$i]["id"],
                 "spots_name" => $spots[$i]["spots_name"],
@@ -88,7 +85,7 @@ class HomeController extends Controller
                 "spots_count" => $spots[$i]["spots_count"],
                 "spots_day_count" => $spotsDayCount,
                 "spots_month_count" => $spotsMonthCount,
-                "border_color" => $borderColor
+                "border_color" => $spots[$i]["spots_color"]
             ];
 
             array_push($spotsData, $data);
