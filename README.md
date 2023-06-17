@@ -11,11 +11,19 @@ docker-compose up -d --build
 ```
 docker container exec -it taxi-stand-system-backend-php-1 bash
 ```
-3.ライブラリのインストール
+3.モジュールのインストール
 ```
 composer install
 ```
 4.マイグレーションの実行(※事前に.envを作成して情報を書き換える)
 ```
 php artisan migrate
+```
+5.Octaneをインストール(swoole[1]を選択)
+```
+php artisan octane:install
+```
+6.Octaneを起動
+```
+php artisan octane:start --host=0.0.0.0 --port=8000
 ```
