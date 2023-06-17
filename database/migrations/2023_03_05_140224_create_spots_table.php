@@ -22,6 +22,7 @@ class CreateSpotsTable extends Migration
             $table->string('spots_longitude');
             $table->string('spots_url');
             $table->string('spots_status');
+            $table->string('spots_color');
             $table->integer('spots_max');
             $table->integer('spots_count');
             $table->string('spots_day_count');
