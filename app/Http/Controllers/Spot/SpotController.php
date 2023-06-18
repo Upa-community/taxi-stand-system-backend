@@ -11,8 +11,13 @@ use App\Models\Day\Day;
 class SpotController extends Controller
 {
     public function spotsRegister(Request $request, $userId) {
-        // グラフ用のカラーコードを生成
         $data = $request->all();
+
+        // 住所から緯度と経度を検索
+        $spotsAddress = $data["spots_address"];
+        $geocodingData = $this->callGeocodingApi($spotsAddress);
+
+        // グラフ用のカラーコードを生成
         $r = rand(130, 255);
         $g = rand(130, 255);
         $b = rand(180, 255);
@@ -21,9 +26,9 @@ class SpotController extends Controller
         Spot::insertGetId([
             "users_id" => $userId,
             "spots_name" => $data["spots_name"],
-            "spots_latitude" => "None",
-            "spots_longitude" => "None",
-            "spots_address" => $data["spots_address"],
+            "spots_address" => $spotsAddress,
+            "spots_latitude" => (string)$geocodingData[0]["geometry"]["coordinates"][1],
+            "spots_longitude" => (string)$geocodingData[0]["geometry"]["coordinates"][0],
             "spots_url" => $data["spots_url"],
             "spots_status" => "None",
             "spots_color" => $color,
@@ -38,9 +43,16 @@ class SpotController extends Controller
 
     public function spotsUpdate(Request $request, $spotsId) {
         $data = $request->all();
+
+        // 住所から緯度と経度を検索
+        $spotsAddress = $data["spots_address"];
+        $geocodingData = $this->callGeocodingApi($spotsAddress);
+
         Spot::where("id", $spotsId)->update([
             "spots_name" => $data["spots_name"],
-            "spots_address" => $data["spots_address"],
+            "spots_address" => $spotsAddress,
+            "spots_latitude" => (string)$geocodingData[0]["geometry"]["coordinates"][1],
+            "spots_longitude" => (string)$geocodingData[0]["geometry"]["coordinates"][0],
             "spots_url" => $data["spots_url"],
             "spots_max" => $data["spots_max"],
         ]);
@@ -71,5 +83,19 @@ class SpotController extends Controller
         }
 
         return response()->json(["days_data" => $daysData], Response::HTTP_OK);
+    }
+
+    private function callGeocodingApi($spotsAddress)
+    {
+        $url = env("GEOCODING_API_URL") . $spotsAddress;
+        $options = [CURLOPT_URL => $url, CURLOPT_HEADER => false, CURLOPT_RETURNTRANSFER => true];
+        $geocodingData= [];
+
+        $curl = curl_init();
+        curl_setopt_array($curl, $options);
+        $response = curl_exec($curl);
+        $geocodingData = json_decode($response, true);
+
+        return $geocodingData;
     }
 }
