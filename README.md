@@ -9,7 +9,7 @@ docker-compose up -d --build
 ```
 2.コンテナに入る
 ```
-docker container exec -it taxi-stand-system-backend-php-1 bash
+docker container exec -it taxi-stand-system-backend-app-1 bash
 ```
 3.モジュールのインストール
 ```
