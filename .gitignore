@@ -13,3 +13,8 @@ npm-debug.log
 yarn-error.log
 /.idea
 /.vscode
+
+/.docker/db/data
+/.docker/db/sql
+/.docker/docker
+/.docker/phpmyadmin
